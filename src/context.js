@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 const Context = React.createContext();
 
 //Contains state and actions that elements use to manipulate the state
@@ -25,31 +26,19 @@ const reducer = (state, action) => {
 
 export class Provider extends Component {
   state = {
-    contacts: [
-      {
-        id: 1,
-        name: 'John Doe',
-        email: 'jdoe@gmail.com',
-        phone: '555-555-5555'
-      },
-      {
-        id: 2,
-        name: 'Karen Williams',
-        email: 'karen@gmail.com',
-        phone: '333-333-3333'
-      },
-      {
-        id: 3,
-        name: 'Henry Johnson',
-        email: 'henry@gmail.com',
-        phone: '777-777-7777'
-      }
-    ],
+    contacts: [],
     dispatch: action => {
       //sends action to reducer? sets up global state variables
       this.setState(state => reducer(state, action));
     }
   };
+
+  async componentDidMount() {
+    //waits for data to be placed in res,
+    const res = await axios.get('https://jsonplaceholder.typicode.com/users');
+
+    this.setState({ contacts: res.data });
+  }
 
   render() {
     return (
