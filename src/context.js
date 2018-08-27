@@ -19,6 +19,11 @@ const reducer = (state, action) => {
         ...state, //auto grabs existing state (called spread operator)
         contacts: [action.payload, ...state.contacts]
       };
+    case 'UPDATE_CONTACT':
+      return {
+        ...state, //auto grabs existing state (called spread operator)
+        contacts: state.contacts.map(contact => contact.id === action.payload.id ? (contact = action.payload) : contact)
+      };
     default:
       return state;
   }
